@@ -36,20 +36,21 @@ public class InjectDataController {
             downloadFile();
         }
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-        String dataInString;
         bufferedReader.readLine();
-        while ((dataInString = bufferedReader.readLine()) != null) {
-            String[] data = dataInString.split(",");
-            User user = new User();
-            user.setUserId(data[2]);
-            user.setName(data[3]);
-            userService.addUser(user);
-            Feedback feedback = new Feedback();
-            feedback.setProductId(data[1]);
-            feedback.setUser(user);
-            feedback.setText(data[9]);
-            feedbackService.addFeedback(feedback);
-        }
+        bufferedReader.lines().forEach(this::parseData);
+    }
+
+    private void parseData(String dataInString) {
+        String[] data = dataInString.split(",");
+        User user = new User();
+        user.setUserId(data[2]);
+        user.setName(data[3]);
+        userService.addUser(user);
+        Feedback feedback = new Feedback();
+        feedback.setProductId(data[1]);
+        feedback.setUser(user);
+        feedback.setText(data[9]);
+        feedbackService.addFeedback(feedback);
     }
 
     private void downloadFile() throws IOException {
