@@ -11,19 +11,18 @@ import javax.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Reader {
+public class InjectData {
     private final UserService userService;
     private final FeedbackService feedbackService;
 
-    public Reader(UserService userService, FeedbackService feedbackService) {
+    public InjectData(UserService userService, FeedbackService feedbackService) {
         this.userService = userService;
         this.feedbackService = feedbackService;
     }
 
     @PostConstruct
     private void injectData() throws Exception {
-        File file = new File("C:\\Users\\maksy\\IdeaProjects\\"
-                + "review\\src\\main\\resources\\Reviews.csv");
+        File file = new File("src\\main\\resources\\Reviews.csv");
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
         String dataInString;
         bufferedReader.readLine();
