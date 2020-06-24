@@ -1,4 +1,4 @@
-package boot.review.util;
+package boot.review.controllers;
 
 import boot.review.entity.Feedback;
 import boot.review.entity.User;
@@ -7,20 +7,20 @@ import boot.review.service.UserService;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import javax.annotation.PostConstruct;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 
-@Component
-public class InjectData {
+@Controller
+public class InjectDataController {
     private final UserService userService;
     private final FeedbackService feedbackService;
 
-    public InjectData(UserService userService, FeedbackService feedbackService) {
+    public InjectDataController(UserService userService, FeedbackService feedbackService) {
         this.userService = userService;
         this.feedbackService = feedbackService;
     }
 
-    @PostConstruct
+    @PostMapping("/inject")
     private void injectData() throws Exception {
         File file = new File("src\\main\\resources\\Reviews.csv");
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
