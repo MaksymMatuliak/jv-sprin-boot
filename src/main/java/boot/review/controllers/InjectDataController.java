@@ -41,14 +41,27 @@ public class InjectDataController {
             downloadFile();
         }
         List<String> data = cvsFileReader.read(PATH);
+        MyThread myThread = new MyThread(data);
         cvsFileParser.parseUsers(data).forEach(userService::addUser);
-        cvsFileParser.parseFeedbacks(data).forEach(feedbackService::addFeedback);
+        myThread.start();
     }
 
     private void downloadFile() throws IOException {
         InputStream in = new URL(URL).openStream();
         Files.copy(in, Paths.get(PATH), StandardCopyOption.REPLACE_EXISTING);
         in.close();
+    }
+
+    private class MyThread extends Thread {
+        private final List<String> data;
+
+        MyThread(List<String> data) {
+            this.data = data;
+        }
+
+        public void run() {
+            cvsFileParser.parseFeedbacks(data).forEach(feedbackService::addFeedback);
+        }
     }
 }
 
