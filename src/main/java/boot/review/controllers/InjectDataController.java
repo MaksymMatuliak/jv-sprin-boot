@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import lombok.SneakyThrows;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,9 +42,9 @@ public class InjectDataController {
             downloadFile();
         }
         List<String> data = cvsFileReader.read(PATH);
-        MyThread myThread = new MyThread(data);
+        ThreadForFeedbacks threadForFeedbacks = new ThreadForFeedbacks(data);
+        threadForFeedbacks.start();
         cvsFileParser.parseUsers(data).forEach(userService::addUser);
-        myThread.start();
     }
 
     private void downloadFile() throws IOException {
@@ -52,14 +53,16 @@ public class InjectDataController {
         in.close();
     }
 
-    private class MyThread extends Thread {
+    private class ThreadForFeedbacks extends Thread {
         private final List<String> data;
 
-        MyThread(List<String> data) {
+        ThreadForFeedbacks(List<String> data) {
             this.data = data;
         }
 
+        @SneakyThrows
         public void run() {
+            sleep(10000);
             cvsFileParser.parseFeedbacks(data).forEach(feedbackService::addFeedback);
         }
     }
