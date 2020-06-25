@@ -1,18 +1,17 @@
 package boot.review.controllers;
 
-import boot.review.entity.Feedback;
-import boot.review.entity.User;
 import boot.review.service.FeedbackService;
 import boot.review.service.UserService;
-import java.io.BufferedReader;
+import boot.review.service.impl.CvsFileParserServiceImpl;
+import boot.review.service.impl.CvsFileReaderServiceImpl;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -23,10 +22,16 @@ public class InjectDataController {
             "https://spring-boot-aws-revievers.s3.eu-central-1.amazonaws.com/Reviews.csv";
     private final UserService userService;
     private final FeedbackService feedbackService;
+    private final CvsFileParserServiceImpl cvsFileParser;
+    private final CvsFileReaderServiceImpl cvsFileReader;
 
-    public InjectDataController(UserService userService, FeedbackService feedbackService) {
+    public InjectDataController(UserService userService, FeedbackService feedbackService,
+                                CvsFileParserServiceImpl cvsFileParser,
+                                CvsFileReaderServiceImpl cvsFileReader) {
         this.userService = userService;
         this.feedbackService = feedbackService;
+        this.cvsFileParser = cvsFileParser;
+        this.cvsFileReader = cvsFileReader;
     }
 
     @PostMapping("/inject")
@@ -35,22 +40,9 @@ public class InjectDataController {
         if (!file.exists()) {
             downloadFile();
         }
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-        bufferedReader.readLine();
-        bufferedReader.lines().forEach(this::parseData);
-    }
-
-    private void parseData(String dataInString) {
-        String[] data = dataInString.split(",");
-        User user = new User();
-        user.setUserId(data[2]);
-        user.setName(data[3]);
-        userService.addUser(user);
-        Feedback feedback = new Feedback();
-        feedback.setProductId(data[1]);
-        feedback.setUser(user);
-        feedback.setText(data[9]);
-        feedbackService.addFeedback(feedback);
+        List<String> data = cvsFileReader.read(PATH);
+        cvsFileParser.parseUsers(data).forEach(userService::addUser);
+        cvsFileParser.parseFeedbacks(data).forEach(feedbackService::addFeedback);
     }
 
     private void downloadFile() throws IOException {
