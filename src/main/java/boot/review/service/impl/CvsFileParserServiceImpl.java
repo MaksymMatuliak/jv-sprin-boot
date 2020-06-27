@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CvsFileParserServiceImpl implements FIleParserService {
+    private static final int indexOfUserId = 2;
+    private static final int indexOfUserName = 3;
+    private static final int indexOfFeedbackText = 9;
     private final UserService userService;
     private final FeedbackService feedbackService;
 
@@ -25,8 +28,8 @@ public class CvsFileParserServiceImpl implements FIleParserService {
         for (String line : lines) {
             String[] data = line.split(",");
             User user = new User();
-            user.setUserId(data[2]);
-            user.setName(data[3]);
+            user.setUserId(data[indexOfUserId]);
+            user.setName(data[indexOfUserName]);
             users.add(user);
         }
         return users;
@@ -39,8 +42,8 @@ public class CvsFileParserServiceImpl implements FIleParserService {
             String[] data = line.split(",");
             Feedback feedback = new Feedback();
             feedback.setProductId(data[1]);
-            feedback.setUser(userService.getById(data[2]));
-            feedback.setText(data[9]);
+            feedback.setUser(userService.getById(data[indexOfUserId]));
+            feedback.setText(data[indexOfFeedbackText]);
             feedbackService.addFeedback(feedback);
             feedbacks.add(feedback);
         }
