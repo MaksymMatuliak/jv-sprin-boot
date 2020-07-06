@@ -1,6 +1,6 @@
 package boot.review.entity.dto;
 
-import boot.review.entity.User;
+import boot.review.entity.ReviewUser;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FeedbackResponseDto {
     private Long feedbackId;
-    private User user;
+    private ReviewUser reviewuser;
     private String productId;
     private String text;
 }

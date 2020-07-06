@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserResponseDto {
+public class ReviewUserResponseDto {
     private String userId;
     private String name;
 }

@@ -8,5 +8,5 @@ public interface UserService {
 
     User addUser(User user);
 
-    User getById(String userId);
+    User getByEmail(String email);
 }

@@ -3,22 +3,22 @@ package boot.review.util;
 import boot.review.entity.Feedback;
 import boot.review.entity.dto.FeedbackRequestDto;
 import boot.review.entity.dto.FeedbackResponseDto;
-import boot.review.service.UserService;
+import boot.review.service.ReviewUserService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FeedbackConvertUtil {
-    public final UserService userService;
+    public final ReviewUserService reviewUserService;
 
-    public FeedbackConvertUtil(UserService userService) {
-        this.userService = userService;
+    public FeedbackConvertUtil(ReviewUserService reviewUserService) {
+        this.reviewUserService = reviewUserService;
     }
 
     public FeedbackResponseDto entityToResponseDto(Feedback feedback) {
         FeedbackResponseDto feedbackResponseDto = new FeedbackResponseDto();
         feedbackResponseDto.setFeedbackId(feedback.getFeedbackId());
         feedbackResponseDto.setProductId(feedback.getProductId());
-        feedbackResponseDto.setUser(feedback.getUser());
+        feedbackResponseDto.setReviewuser(feedback.getReviewUser());
         feedbackResponseDto.setText(feedback.getText());
         return feedbackResponseDto;
     }
@@ -26,7 +26,7 @@ public class FeedbackConvertUtil {
     public Feedback requestDtoToEntity(FeedbackRequestDto feedbackRequestDto) {
         Feedback feedback = new Feedback();
         feedback.setText(feedbackRequestDto.getText());
-        feedback.setUser(userService.getById(feedbackRequestDto.getUserId()));
+        feedback.setReviewUser(reviewUserService.getReviewUserById(feedbackRequestDto.getUserId()));
         feedback.setProductId(feedbackRequestDto.getProductId());
         return feedback;
     }

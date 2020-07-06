@@ -1,22 +1,22 @@
 package boot.review.util;
 
-import boot.review.entity.User;
-import boot.review.entity.dto.UserRequestDto;
-import boot.review.entity.dto.UserResponseDto;
+import boot.review.entity.ReviewUser;
+import boot.review.entity.dto.ReviewUserRequestDto;
+import boot.review.entity.dto.ReviewUserResponseDto;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserConvertUtil {
-    public UserResponseDto entityToResponseDto(User user) {
-        UserResponseDto userResponseDto = new UserResponseDto();
-        userResponseDto.setName(user.getName());
-        userResponseDto.setUserId(user.getUserId());
-        return userResponseDto;
+    public ReviewUserResponseDto entityToResponseDto(ReviewUser reviewuser) {
+        ReviewUserResponseDto reviewUserResponseDto = new ReviewUserResponseDto();
+        reviewUserResponseDto.setName(reviewuser.getName());
+        reviewUserResponseDto.setUserId(reviewuser.getUserId());
+        return reviewUserResponseDto;
     }
 
-    public User requestDtoToEntity(UserRequestDto userRequestDto) {
-        User user = new User();
-        user.setName(userRequestDto.getName());
-        return user;
+    public ReviewUser requestDtoToEntity(ReviewUserRequestDto reviewUserRequestDto) {
+        ReviewUser reviewuser = new ReviewUser();
+        reviewuser.setName(reviewUserRequestDto.getName());
+        return reviewuser;
     }
 }
