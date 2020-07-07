@@ -79,6 +79,10 @@
             <artifactId>spring-security-web</artifactId>
             <version>5.3.3.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
