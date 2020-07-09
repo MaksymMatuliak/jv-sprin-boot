@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +33,7 @@ public class FeedbackController {
     }
 
     @PostMapping
-    public void addFeedback(FeedbackRequestDto feedbackRequestDto) {
+    public void addFeedback(@RequestBody FeedbackRequestDto feedbackRequestDto) {
         feedbackService.addFeedback(feedbackConvertUtil.requestDtoToEntity(feedbackRequestDto));
     }
 }

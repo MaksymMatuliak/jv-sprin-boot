@@ -18,7 +18,7 @@ public class Feedback {
     @Column(name = "feedback_id")
     private Long feedbackId;
     @ManyToOne
-    private User user;
+    private ReviewUser reviewUser;
     private String productId;
     @Column(length = 10000)
     private String text;
