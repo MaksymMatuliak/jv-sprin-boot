@@ -1,8 +1,11 @@
 language: java
 jdk:
   - openjdk11
+services:
+  - mysql
 before_install:
   - chmod +x mvnw
+  - mysql -e 'create database if not exists spring_boot;'
 script:
   - mvn clean install
 cache:
